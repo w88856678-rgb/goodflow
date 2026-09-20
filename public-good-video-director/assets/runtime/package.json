@@ -1,0 +1,21 @@
+{
+  "name": "public-good-vox-video-mvp",
+  "private": true,
+  "version": "2.0.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "studio": "remotion studio remotion/src/index.jsx",
+    "render": "remotion render remotion/src/index.jsx PublicGoodFilm",
+    "hyperframes:doctor": "hyperframes doctor"
+  },
+  "dependencies": {
+    "@remotion/cli": "^4.0.370",
+    "gsap": "^3.14.2",
+    "hyperframes": "0.8.17",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "remotion": "^4.0.370"
+  }
+}

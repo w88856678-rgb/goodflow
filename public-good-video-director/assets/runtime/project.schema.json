@@ -1,0 +1,172 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Public Good Vox Video Project",
+  "type": "object",
+  "required": ["project_name", "source_text", "duration", "aspect", "tone", "assets"],
+  "properties": {
+    "project_name": {"type": "string", "minLength": 1},
+    "organization": {"type": "string"},
+    "source_text": {"type": "string", "minLength": 20},
+    "duration": {"type": "number", "minimum": 10, "maximum": 180},
+    "aspect": {"enum": ["9:16"]},
+    "tone": {"enum": ["温暖松弛", "纪实克制", "进展有力"]},
+    "call_to_action": {"type": "string"},
+    "rendering": {
+      "type": "object",
+      "properties": {
+        "engine": {"enum": ["hyperframes", "remotion", "auto"]},
+        "fallback": {"enum": ["remotion", "hyperframes", "none"]},
+        "motion_profile": {"enum": ["silky", "restrained", "energetic"]}
+      }
+    },
+    "source_media": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["path", "type", "rights"],
+        "properties": {
+          "path": {"type": "string"},
+          "type": {"enum": ["image", "video"]},
+          "caption": {"type": "string"},
+          "rights": {"enum": ["authorized", "unverified", "restricted"]}
+        }
+      }
+    },
+    "models": {
+      "type": "object",
+      "properties": {
+        "writer": {"type": "string"},
+        "image": {"type": "string"},
+        "tts": {"type": "string"}
+      }
+    },
+    "fallback_models": {
+      "type": "object",
+      "properties": {
+        "image": {"type": "string"},
+        "tts": {"type": "string"}
+      }
+    },
+    "providers": {
+      "type": "object",
+      "properties": {
+        "strategy": {"enum": ["best-available", "fixed"]},
+        "image": {"type": "string"},
+        "tts": {"type": "string"},
+        "fallback": {"type": "string"}
+      }
+    },
+    "assets": {
+      "type": "object",
+      "required": ["keyframes"],
+      "properties": {
+        "keyframes": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {"type": "string"},
+              {
+                "type": "object",
+                "required": ["path", "cues"],
+                "properties": {
+                  "path": {"type": "string"},
+                  "cues": {"type": "array", "items": {"type": "string"}},
+                  "move": {"enum": ["static", "push_in", "pull_out", "pan", "rise", "parallax"]},
+                  "transition": {"enum": ["paper_wipe", "map_push", "paper_roll", "ink_reveal"]},
+                  "depth": {"enum": ["flat", "layered"]},
+                  "cover_mode": {"enum": ["static_complete"]},
+                  "layout_id": {
+                    "enum": ["static_complete", "single_portrait", "single_landscape", "hero_support", "duo_equal", "grid_2x2", "poster_stat", "grouped_briefs", "layered_story"]
+                  },
+                  "fit": {"enum": ["contain", "cover"]},
+                  "media": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 4,
+                    "items": {
+                      "type": "object",
+                      "required": ["path", "at"],
+                      "properties": {
+                        "asset": {"type": "string"},
+                        "path": {"type": "string"},
+                        "role": {"type": "string"},
+                        "cue": {"type": "string"},
+                        "at": {"type": "number", "minimum": 0, "maximum": 1},
+                        "fit": {"enum": ["contain", "cover"]}
+                      }
+                    }
+                  },
+                  "headline": {"type": "string"},
+                  "accent": {"type": "string"},
+                  "components": {"type": "array", "items": {"type": "string"}},
+                  "layers": {
+                    "type": "object",
+                    "required": ["background", "subject"],
+                    "properties": {
+                      "background": {"type": "string"},
+                      "subject": {"type": "string"},
+                      "foreground": {"type": "string"}
+                    }
+                  },
+                  "layer_provider": {"type": "string"},
+                  "motion_events": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": ["type", "at"],
+                      "properties": {
+                        "type": {"type": "string"},
+                        "at": {"type": "number", "minimum": 0, "maximum": 1},
+                        "duration": {"type": "number", "minimum": 0.05, "maximum": 1},
+                        "text": {"type": "string"},
+                        "value": {"type": "string"},
+                        "items": {"type": "array", "items": {"type": "string"}, "maxItems": 4},
+                        "variant": {"type": "string"},
+                        "suppressed": {"type": "boolean"},
+                        "suppression_reason": {"type": "string"},
+                        "target": {
+                          "type": "object",
+                          "required": ["x", "y"],
+                          "properties": {
+                            "x": {"type": "number", "minimum": 0, "maximum": 1080},
+                            "y": {"type": "number", "minimum": 0, "maximum": 1920},
+                            "width": {"type": "number", "minimum": 1, "maximum": 1080},
+                            "height": {"type": "number", "minimum": 1, "maximum": 1920}
+                          }
+                        },
+                        "layout": {
+                          "type": "object",
+                          "required": ["x", "y", "width", "height"],
+                          "properties": {
+                            "x": {"type": "number", "minimum": 0, "maximum": 1080},
+                            "y": {"type": "number", "minimum": 0, "maximum": 1920},
+                            "width": {"type": "number", "minimum": 1, "maximum": 1080},
+                            "height": {"type": "number", "minimum": 1, "maximum": 1920},
+                            "source": {"type": "string"}
+                          }
+                        },
+                        "sfx": {"enum": ["paper", "whoosh", "tap", "chime"]}
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          "minItems": 1
+        },
+        "narration": {"type": "string"},
+        "timestamps": {"type": "string"},
+        "music": {"type": "string"},
+        "logo": {"type": "string"}
+      }
+    },
+    "privacy": {
+      "type": "object",
+      "properties": {
+        "minor_faces_allowed": {"type": "boolean"},
+        "materials_authorized": {"type": "boolean"}
+      }
+    }
+  }
+}

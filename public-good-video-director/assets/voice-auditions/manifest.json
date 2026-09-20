@@ -1,0 +1,31 @@
+{
+  "purpose": "Same-script listening references for selecting an original Bailian Voice Design profile.",
+  "audition_text": "一顿热乎的午餐，看起来只是生活里的一件小事。可对孩子们来说，它意味着每天中午，都有人在惦记他们的成长。",
+  "license_note": "Generated for this skill with the user's Alibaba Bailian account. Use as listening references; do not use these files as voice-cloning training audio.",
+  "profiles": [
+    {
+      "id": "warm-documentary",
+      "name": "温暖纪实",
+      "file": "01-warm-documentary.wav",
+      "recommended_for": "学校、儿童、乡村与陪伴类公益故事"
+    },
+    {
+      "id": "gentle-senior",
+      "name": "温柔学姐",
+      "file": "02-gentle-senior.wav",
+      "recommended_for": "项目介绍、阶段进展与纪实回访"
+    },
+    {
+      "id": "soft-intimate",
+      "name": "柔和陪伴",
+      "file": "03-soft-intimate.wav",
+      "recommended_for": "人物细节与第一人称故事"
+    },
+    {
+      "id": "sincere-adult",
+      "name": "真诚青年",
+      "file": "04-sincere-adult.wav",
+      "recommended_for": "项目数据、行动进展与倡议内容"
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "warm-documentary": {
+    "name": "温暖纪实（默认）",
+    "inspired_by": [
+      "MiniMax Chinese (Mandarin)_Warm_Bestie",
+      "MiniMax Chinese (Mandarin)_Gentle_Senior"
+    ],
+    "description": "温润、松弛、可信赖，适合学校、儿童、乡村与陪伴类公益故事。",
+    "prefix": "pgwarmdoc",
+    "voice_prompt": "二十八至三十五岁的中国女性，中低音区，声线温润清澈但不甜腻，气息松弛，像可信赖的朋友在安静地讲一个真实故事。语速自然，重音克制，句尾轻轻落下，有细微停顿和真实呼吸。不要播音腔、广告腔、儿童腔，不夸张煽情。",
+    "instruction": "像给朋友讲一个亲眼见到的真实公益故事。语气温暖松弛、有轻重和呼吸；事实清楚，情绪克制，句尾自然落下。避免宣传片、播音员和广告口吻。",
+    "speech_rate": 0.97,
+    "volume": 62,
+    "preview_text": "一顿热乎的午餐，不只照顾着今天，也有人在惦记他们的成长。"
+  },
+  "gentle-senior": {
+    "name": "温柔学姐",
+    "inspired_by": [
+      "MiniMax Chinese (Mandarin)_Gentle_Senior"
+    ],
+    "description": "成熟平静、清楚耐听，适合项目介绍、阶段进展和纪实回访。",
+    "prefix": "pggentlesr",
+    "voice_prompt": "三十岁左右的中国女性，成熟、平静、温柔，中音区，吐字清楚但没有播音痕迹。说话从容，有自然换气和轻微停顿，像熟悉项目的人在面对面分享近况。情绪含蓄可信，不甜腻，不故作感动。",
+    "instruction": "从容地分享一段真实进展，保持自然对话感。数字和地名说清楚，情绪只在关键细节处轻轻加深，句尾不要上扬，不要朗诵。",
+    "speech_rate": 0.96,
+    "volume": 61,
+    "preview_text": "变化不是突然发生的，它藏在每天准时升起的饭香里。"
+  },
+  "soft-intimate": {
+    "name": "柔和陪伴",
+    "inspired_by": [
+      "MiniMax Chinese (Mandarin)_Soft_Girl"
+    ],
+    "description": "近距离、柔和、有陪伴感，适合人物细节和第一人称故事。",
+    "prefix": "pgsoftintm",
+    "voice_prompt": "二十五至三十二岁的中国女性，声音柔和但具有成年人的稳定感，近讲、自然、真诚，像坐在听众身边分享一件小事。保留细微呼吸和口语停顿，关键细节稍慢，避免幼态、撒娇、甜腻和表演感。",
+    "instruction": "用近距离聊天的方式讲述，声音柔和但不幼态。遇到人物动作和一句话时稍慢一点，留出短停顿，不要刻意催泪。",
+    "speech_rate": 0.95,
+    "volume": 60,
+    "preview_text": "她把最大的一块留到最后，因为心里还惦记着奶奶。"
+  },
+  "sincere-adult": {
+    "name": "真诚青年",
+    "inspired_by": [
+      "MiniMax Chinese (Mandarin)_Sincere_Adult"
+    ],
+    "description": "中性、真诚、有行动感，适合项目进展、数据和倡议型内容。",
+    "prefix": "pgsincere",
+    "voice_prompt": "二十八至三十五岁的中国青年，中性偏温暖的声线，真诚、清爽、有可信度，语速自然利落。像项目伙伴在讲述已经发生的改变，数字表达清楚，重音准确，但不使用新闻播报或商业广告腔。",
+    "instruction": "真诚、清楚地讲述事实和变化。数字略微放慢，行动信息更有力量；保持口语感，不喊口号，不拖长情绪。",
+    "speech_rate": 1.0,
+    "volume": 62,
+    "preview_text": "从一所学校开始，稳定的一餐，正在变成看得见的改变。"
+  }
+}

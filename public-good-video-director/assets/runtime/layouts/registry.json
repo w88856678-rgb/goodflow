@@ -1,0 +1,77 @@
+{
+  "version": 1,
+  "layouts": {
+    "static_complete": {
+      "min_media": 1,
+      "max_media": 1,
+      "fit": "contain",
+      "move": "static",
+      "depth": "flat",
+      "description": "完整静止封面，不叠加界面或动画"
+    },
+    "single_portrait": {
+      "min_media": 1,
+      "max_media": 1,
+      "fit": "contain",
+      "move": "push_in",
+      "depth": "flat",
+      "description": "单张竖图、人物或海报，主体完整"
+    },
+    "single_landscape": {
+      "min_media": 1,
+      "max_media": 1,
+      "fit": "contain",
+      "move": "pan",
+      "depth": "flat",
+      "description": "单张横图或横幅，标题与人物完整"
+    },
+    "hero_support": {
+      "min_media": 2,
+      "max_media": 3,
+      "fit": "contain",
+      "move": "parallax",
+      "depth": "flat",
+      "description": "一张主图加一至两张补充图"
+    },
+    "duo_equal": {
+      "min_media": 2,
+      "max_media": 2,
+      "fit": "contain",
+      "move": "rise",
+      "depth": "flat",
+      "description": "两张同级素材并列完整展示"
+    },
+    "grid_2x2": {
+      "min_media": 3,
+      "max_media": 4,
+      "fit": "contain",
+      "move": "pull_out",
+      "depth": "flat",
+      "description": "三至四张同一活动素材组成信息网格"
+    },
+    "poster_stat": {
+      "min_media": 1,
+      "max_media": 2,
+      "fit": "contain",
+      "move": "push_in",
+      "depth": "flat",
+      "description": "活动海报配结果数字或简短说明"
+    },
+    "grouped_briefs": {
+      "min_media": 2,
+      "max_media": 4,
+      "fit": "contain",
+      "move": "pan",
+      "depth": "flat",
+      "description": "同一口播段中的多个简讯，每张图均需与名称对应"
+    },
+    "layered_story": {
+      "min_media": 1,
+      "max_media": 1,
+      "fit": "cover",
+      "move": "parallax",
+      "depth": "layered",
+      "description": "已经完成背景、主体、前景分层的故事镜头"
+    }
+  }
+}

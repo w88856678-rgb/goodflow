@@ -1,0 +1,4 @@
+interface:
+  display_name: "公益 Vox 视频导演"
+  short_description: "公益图文导演层：最佳媒体模型 + HyperFrames 丝滑成片"
+  default_prompt: "请把我提供的公益项目介绍、故事、进展文字和已授权图片，制作成事实准确、配音自然、音画同步、具有真实分层连续动画的 9:16 Vox 风格成片。保留导演层的文案审批和逐句音画映射；先检查当前 Agent 真正可调用的生图和语音能力，图像与语音分别选择质量最好的工具；免费语音可先试听 Edge TTS 与 Kokoro 中文，阿里云百炼仅作兜底；自动检测主体与安全区、避开遮挡，并优先用 HyperFrames 丝滑渲染，Remotion 仅作兼容兜底；记录实际 provider、model、alignment、renderer 和可恢复任务状态。"

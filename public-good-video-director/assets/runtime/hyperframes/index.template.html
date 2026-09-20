@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="zh-CN" data-resolution="portrait">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="./assets/vendor/gsap.min.js"></script>
+    <style>
+      @font-face { font-family: "PingFang SC"; src: local("PingFang SC"); }
+      @font-face { font-family: "Noto Sans CJK SC"; src: local("Noto Sans CJK SC"); }
+      @font-face { font-family: "Songti SC"; src: local("Songti SC"); }
+      * { box-sizing: border-box; }
+      html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; background: #18211d; }
+      body { font-family: "PingFang SC", "Noto Sans CJK SC", sans-serif; }
+      #root { position: relative; width: 1080px; height: 1920px; overflow: hidden; background: #18211d; }
+      .scene { position: absolute; inset: 0; overflow: hidden; opacity: 0; }
+      .layer { position: absolute; inset: -5%; width: 110%; height: 110%; object-fit: cover; }
+      .scene.static-cover { background: #f7f0e4 !important; }
+      .scene.static-cover .layer { inset: 0; width: 100%; height: 100%; object-fit: contain; }
+      .scene.declarative { background: #eee3cc !important; }
+      .scene.declarative .layer-base { opacity: .11; filter: blur(12px) saturate(.72); }
+      .media-stage { position: absolute; z-index: 8; left: 54px; right: 54px; top: 300px; bottom: 315px;
+        display: grid; gap: 24px; align-items: stretch; }
+      .media-card { position: relative; min-width: 0; min-height: 0; overflow: hidden; padding: 12px;
+        background: rgba(247,240,226,.98); border: 2px solid rgba(45,107,85,.18);
+        box-shadow: 13px 16px 0 rgba(24,33,29,.22); }
+      .media-card img { display: block; width: 100%; height: 100%; object-fit: contain; }
+      .layout-single_portrait .media-stage { left: 112px; right: 112px; }
+      .layout-single_landscape .media-stage { top: 420px; bottom: 480px; }
+      .layout-hero_support .media-stage { grid-template-columns: 1.55fr .9fr; grid-template-rows: 1fr 1fr; }
+      .layout-hero_support .media-card:first-child { grid-row: 1 / span 2; }
+      .layout-duo_equal .media-stage { grid-template-columns: 1fr 1fr; }
+      .layout-grid_2x2 .media-stage, .layout-grouped_briefs .media-stage { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }
+      .layout-poster_stat .media-stage { left: 82px; right: 430px; }
+      .wash { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(24,33,29,.02) 42%, rgba(24,33,29,.48)); }
+      .grain { position: absolute; inset: 0; opacity: .13; mix-blend-mode: multiply; pointer-events: none;
+        background-image: repeating-radial-gradient(circle at 20% 30%, rgba(20,20,10,.42) 0 1px, transparent 1px 4px);
+        background-size: 7px 9px; }
+      .headline, .caption, .event { position: absolute; z-index: 20; }
+      .headline { left: 64px; top: 118px; max-width: 880px; padding: 20px 34px 24px; color: #18211d;
+        background: #f2e7ce; font-size: 60px; font-weight: 950; line-height: 1.08;
+        box-shadow: 16px 18px 0 rgba(20,25,20,.26); transform: rotate(-1.8deg);
+        clip-path: polygon(1% 4%,98% 0,100% 88%,4% 100%,0 30%); }
+      .caption { left: 50%; bottom: 116px; width: max-content; max-width: 940px; transform: translateX(-50%);
+        padding: 20px 34px 23px; color: #18211d; background: rgba(247,237,218,.97);
+        font-size: 48px; line-height: 1.2; font-weight: 900; text-align: center;
+        box-shadow: 6px 8px 0 rgba(15,20,15,.20); border-radius: 3px; }
+      .caption.long { max-width: 960px; font-size: 44px; line-height: 1.3; }
+      .caption.xlong { max-width: 960px; padding: 18px 28px 21px; font-size: 42px; line-height: 1.3; }
+      .caption-line { display: block; white-space: nowrap; }
+      .paper-transition { position: absolute; inset: -4%; z-index: 45; background: #f2e7ce;
+        clip-path: polygon(0 0,92% 0,100% 4%,94% 11%,100% 18%,93% 28%,100% 36%,95% 47%,100% 58%,93% 69%,100% 82%,94% 91%,100% 100%,0 100%); }
+      .number-card { right: 72px; top: 900px; min-width: 270px; padding: 28px 34px; color: #18211d;
+        background: #f2e7ce; border: 10px solid #d9543f; box-shadow: 17px 20px 0 rgba(20,25,20,.26);
+        font-size: 76px; font-weight: 950; text-align: center; transform: rotate(3deg); }
+      .underline { left: 92px; top: 1230px; max-width: 810px; color: #f2e7ce; font-size: 54px;
+        font-weight: 950; text-shadow: 5px 7px 0 rgba(20,25,20,.32); }
+      .underline::after { content: ""; display: block; height: 18px; margin-top: 10px; background: #f3c85a;
+        box-shadow: 7px 8px 0 rgba(20,25,20,.2); transform: rotate(-1deg); }
+      .focus-ring { left: 560px; top: 620px; width: 340px; height: 340px; border: 20px solid #f3c85a;
+        border-radius: 50%; box-shadow: 0 0 0 10px rgba(24,33,29,.22); }
+      .pin { left: 710px; top: 575px; width: 112px; height: 112px; border-radius: 52% 52% 52% 8%;
+        background: #d9543f; border: 10px solid #f2e7ce; box-shadow: 16px 19px 0 rgba(20,25,20,.25);
+        transform: rotate(-45deg); }
+      .pin::after { content: ""; position: absolute; left: 31px; top: 31px; width: 30px; height: 30px;
+        border-radius: 50%; background: #f2e7ce; }
+      .arrow { right: 90px; top: 670px; color: #f3c85a; font-size: 220px; font-weight: 950;
+        text-shadow: 10px 12px 0 rgba(20,25,20,.24); transform: rotate(-26deg); }
+      .quote { left: 112px; top: 340px; width: 790px; padding: 48px; color: #18211d; background: rgba(242,231,206,.96);
+        font-family: "Songti SC", serif; font-size: 52px; line-height: 1.28; font-weight: 900;
+        box-shadow: 20px 24px 0 rgba(20,25,20,.24); transform: rotate(-2deg); }
+      .route { left: 70px; top: 990px; width: 930px; height: 480px; }
+      .route path { fill: none; stroke: #f3c85a; stroke-width: 20; stroke-linecap: round;
+        filter: drop-shadow(8px 10px 0 rgba(15,25,20,.25)); }
+      .fact-stack { left: 72px; top: 900px; width: 936px; display: flex; flex-wrap: wrap;
+        gap: 18px; align-items: flex-start; }
+      .fact-chip { opacity: 0; padding: 18px 26px 20px; color: #18211d; background: rgba(242,231,206,.97);
+        font-size: 43px; line-height: 1.08; font-weight: 900;
+        box-shadow: 10px 12px 0 rgba(20,25,20,.24); transform: rotate(-1deg); }
+      .fact-stack.people .fact-chip { width: calc(50% - 9px); }
+      .cause-flow { left: 70px; top: 825px; width: 940px; display: grid; grid-template-columns: repeat(3, 1fr);
+        gap: 18px; align-items: stretch; }
+      .flow-step { opacity: 0; min-height: 220px; padding: 28px 22px 24px; color: #18211d;
+        background: rgba(242,231,206,.97);
+        box-shadow: 12px 15px 0 rgba(20,25,20,.24); font-size: 42px; line-height: 1.12;
+        font-weight: 900; text-align: center; }
+      .flow-step b { display: block; margin-bottom: 18px; color: #c94734; font-size: 30px; letter-spacing: 2px; }
+      .brand { position: absolute; left: 58px; top: 54px; z-index: 50; color: #f2e7ce;
+        font-size: 20px; font-weight: 850; letter-spacing: 4px; text-shadow: 3px 4px 0 rgba(20,20,15,.25); }
+      .progress { position: absolute; left: 58px; top: 88px; z-index: 50; width: 210px; height: 7px; background: #d9543f; }
+      .progress > div { height: 100%; background: #f3c85a; transform-origin: left center; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="__PG_DURATION__" data-width="1080" data-height="1920" data-fps="30">__PG_AUDIO_TAGS__</div>
+    <script>
+      const DATA = __PG_DATA__;
+      const root = document.getElementById('root');
+      const tl = gsap.timeline({paused: true});
+      const palette = ['#2d6b55','#d9543f','#335d73','#e3af3e','#c95b3b','#4e6651'];
+      const add = (tag, cls, parent = root) => {
+        const node = document.createElement(tag);
+        if (cls) node.className = cls;
+        parent.appendChild(node);
+        return node;
+      };
+      const text = (node, value) => { node.textContent = value || ''; return node; };
+      const clip = (node, start, duration, track) => {
+        node.classList.add('clip'); node.dataset.start = start; node.dataset.duration = duration;
+        node.dataset.trackIndex = track; return node;
+      };
+      const eventNode = (event, scene, parent) => {
+        if (event.suppressed) return null;
+        let node;
+        if (event.type === 'number_card') node = text(add('div', 'event number-card', parent), event.value);
+        else if (event.type === 'underline') node = text(add('div', 'event underline', parent), event.text || scene.headline);
+        else if (event.type === 'focus_ring' && event.target) {
+          node = add('div', 'event focus-ring', parent);
+          Object.assign(node.style, {left: `${event.target.x}px`, top: `${event.target.y}px`, width: `${event.target.width || 180}px`, height: `${event.target.height || 180}px`});
+        }
+        else if (event.type === 'pin_drop' && event.target) {
+          node = add('div', 'event pin', parent);
+          Object.assign(node.style, {left: `${event.target.x}px`, top: `${event.target.y}px`});
+        }
+        else if (event.type === 'arrow_in' && event.target) {
+          node = text(add('div', 'event arrow', parent), '↙');
+          Object.assign(node.style, {left: `${event.target.x}px`, right: 'auto', top: `${event.target.y}px`});
+        }
+        else if (event.type === 'quote_reveal') node = text(add('div', 'event quote', parent), `“${event.text || ''}”`);
+        else if (event.type === 'cta_reveal') node = text(add('div', 'event quote', parent), DATA.cta);
+        else if (event.type === 'fact_stack') {
+          node = add('div', `event fact-stack ${event.variant || ''}`, parent);
+          node.__children = (event.items || []).map((item) => text(add('div', 'fact-chip', node), item));
+        } else if (event.type === 'cause_flow') {
+          node = add('div', 'event cause-flow', parent);
+          node.__children = (event.items || []).map((item, index) => {
+            const step = add('div', 'flow-step', node);
+            text(add('b', '', step), `0${index + 1}`);
+            text(add('span', '', step), item);
+            return step;
+          });
+        } else if (event.type === 'route_draw') {
+          node = add('svg', 'event route', parent); node.setAttribute('viewBox', '0 0 930 480');
+          const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+          path.setAttribute('d', 'M40 390 C180 230,280 450,410 270 S690 70,880 130');
+          path.style.strokeDasharray = '1400'; path.style.strokeDashoffset = '1400'; node.appendChild(path);
+          node.__routePath = path;
+        } else if (event.type === 'paper_label') node = text(add('div', 'event headline', parent), event.text || scene.headline);
+        else node = null;
+        if (node && event.layout) {
+          node.style.left = `${event.layout.x}px`;
+          node.style.right = 'auto';
+          node.style.top = `${event.layout.y}px`;
+          node.style.width = `${event.layout.width}px`;
+          node.style.maxWidth = `${event.layout.width}px`;
+        }
+        return node;
+      };
+
+      const motionPreset = (move, layer) => {
+        const depth = [1, 1.35, 1.7][layer];
+        if (move === 'static') return [{scale: 1, x: 0, y: 0}, {scale: 1, x: 0, y: 0}];
+        if (move === 'pull_out') return [{scale: 1.18 + layer * .02, x: -12 * depth, y: 12}, {scale: 1.07 + layer * .02, x: 14 * depth, y: -8}];
+        if (move === 'push_in') return [{scale: 1.07 + layer * .02, x: 12 * depth, y: 8}, {scale: 1.2 + layer * .025, x: -16 * depth, y: -14}];
+        if (move === 'pan') return [{scale: 1.13 + layer * .02, x: -34 * depth, y: 5}, {scale: 1.13 + layer * .02, x: 34 * depth, y: -5}];
+        if (move === 'rise') return [{scale: 1.13 + layer * .02, x: -7 * depth, y: 38 * depth}, {scale: 1.16 + layer * .02, x: 10 * depth, y: -42 * depth}];
+        if (move === 'parallax') return [{scale: 1.11 + layer * .025, x: -28 * depth, y: 18 - layer * 8}, {scale: 1.18 + layer * .025, x: 30 * depth, y: -20 + layer * 7}];
+        return [{scale: 1.1 + layer * .02, x: -18 * depth, y: 10}, {scale: 1.17 + layer * .02, x: 24 * depth, y: -18}];
+      };
+
+      DATA.scenes.forEach((scene, index) => {
+        const duration = scene.end - scene.start;
+        const section = clip(add('section', 'scene'), scene.start, duration, index + 1);
+        const isStaticCover = scene.move === 'static';
+        const useDeclarativeLayout = !isStaticCover && Array.isArray(scene.media) && scene.media.length && scene.layout_id && scene.layout_id !== 'layered_story';
+        if (isStaticCover) section.classList.add('static-cover');
+        if (useDeclarativeLayout) section.classList.add('declarative', `layout-${scene.layout_id}`);
+        section.style.background = scene.accent || palette[index % palette.length];
+        const back = add('img', `layer${useDeclarativeLayout ? ' layer-base' : ''}`, section); back.src = isStaticCover ? scene.file : (scene.layers?.background || scene.file);
+        const middle = !isStaticCover && !useDeclarativeLayout && scene.layers?.subject ? add('img', 'layer', section) : null;
+        if (middle) middle.src = scene.layers.subject;
+        const front = !isStaticCover && !useDeclarativeLayout && scene.layers?.foreground ? add('img', 'layer', section) : null;
+        if (front) front.src = scene.layers.foreground;
+        const mediaStage = useDeclarativeLayout ? add('div', 'media-stage', section) : null;
+        const mediaCards = mediaStage ? scene.media.map((media) => {
+          const card = add('div', 'media-card', mediaStage);
+          const image = add('img', '', card);
+          image.src = media.path;
+          image.style.objectFit = media.fit || scene.fit || 'contain';
+          card.__revealAt = Math.max(0, Math.min(1, Number(media.at || 0)));
+          return card;
+        }) : [];
+        if (!isStaticCover) { add('div', 'wash', section); add('div', 'grain', section); }
+        if (scene.headline && !isStaticCover) text(add('div', 'headline', section), scene.headline);
+        const transition = add('div', 'paper-transition', section);
+        const enter = index === 0 ? 0 : .28;
+        const backMotion = motionPreset(scene.move, 0);
+        const middleMotion = motionPreset(scene.move, 1);
+        const frontMotion = motionPreset(scene.move, 2);
+        tl.set(section, {opacity: 0}, 0)
+          .to(section, {opacity: 1, duration: enter || .01, ease: 'power2.out'}, scene.start);
+        if (isStaticCover) {
+          tl.set(transition, {xPercent: 112}, scene.start)
+            .set(back, backMotion[0], scene.start);
+        } else {
+          tl.fromTo(transition, {xPercent: 0}, {xPercent: 112, duration: .46, ease: 'power3.inOut'}, scene.start)
+            .fromTo(back, backMotion[0], {...backMotion[1], duration, ease: 'none'}, scene.start);
+        }
+        if (middle) tl.fromTo(middle, middleMotion[0], {...middleMotion[1], duration, ease: 'sine.inOut'}, scene.start);
+        if (front) tl.fromTo(front, frontMotion[0], {...frontMotion[1], duration, ease: 'sine.inOut'}, scene.start);
+        if (mediaStage) {
+          tl.fromTo(mediaStage, {scale: .985, y: 14}, {scale: 1.015, y: -10, duration, ease: 'none'}, scene.start);
+          mediaCards.forEach((card, cardIndex) => {
+            const reveal = scene.start + duration * card.__revealAt;
+            tl.fromTo(card, {opacity: 0, y: 44, rotation: cardIndex % 2 ? 1.2 : -1.2},
+              {opacity: 1, y: 0, rotation: 0, duration: .38, ease: 'power2.out'}, reveal);
+          });
+        }
+        if (index < DATA.scenes.length - 1) tl.to(section, {opacity: 0, duration: .34, ease: 'power2.in'}, scene.end - .34);
+        const headline = section.querySelector('.headline');
+        if (headline) tl.fromTo(headline, {x: -720, rotation: -5}, {x: 0, rotation: -1.8, duration: .48, ease: 'back.out(1.2)'}, scene.start + .08);
+        (scene.motion_events || []).forEach((event) => {
+          if (event.type === 'paper_label' && headline) return;
+          const node = eventNode(event, scene, section);
+          if (!node) return;
+          const at = scene.start + duration * Number(event.at || 0);
+          if (node.__children) {
+            tl.set(node, {opacity: 1}, at)
+              .fromTo(node.__children, {opacity: 0, y: 55, rotation: -2}, {opacity: 1, y: 0, rotation: 0, duration: .4, stagger: .13, ease: 'back.out(1.2)'}, at);
+          } else if (node.__routePath) tl.to(node.__routePath, {strokeDashoffset: 0, duration: .8, ease: 'power2.inOut'}, at);
+          else tl.fromTo(node, {opacity: 0, y: 90, scale: .72}, {opacity: 1, y: 0, scale: 1, duration: .45, ease: 'back.out(1.35)'}, at);
+        });
+      });
+
+      DATA.captions.forEach((caption, index) => {
+        const lengthClass = caption.text.length > 54 ? ' xlong' : (caption.text.length > 34 ? ' long' : '');
+        const node = clip(text(add('div', `caption${lengthClass}`), caption.text), caption.from, caption.to - caption.from, 80 + index);
+        if (caption.lines !== undefined) {
+          if (!Array.isArray(caption.lines) || !caption.lines.length || caption.lines.some(line => typeof line !== 'string' || !line || line.includes('\n')) || caption.lines.join('') !== caption.text) {
+            throw new Error('Caption lines must match the exact approved text.');
+          }
+          node.textContent = '';
+          caption.lines.forEach(line => text(add('span', 'caption-line', node), line));
+        }
+        tl.fromTo(node, {opacity: 0}, {opacity: 1, duration: .12, ease: 'power2.out'}, caption.from)
+          .to(node, {opacity: 0, duration: .10}, Math.max(caption.from + .2, caption.to - .10));
+      });
+      const brand = text(add('div', 'brand'), 'PUBLIC GOOD · STORY');
+      const progress = add('div', 'progress'); const progressFill = add('div', '', progress);
+      const interfaceStart = DATA.scenes[1]?.start || 0;
+      if (interfaceStart > 0) {
+        tl.set([brand, progress], {opacity: 0}, 0)
+          .to([brand, progress], {opacity: 1, duration: .24, ease: 'power2.out'}, interfaceStart + .12);
+      }
+      tl.fromTo(progressFill, {scaleX: 0}, {scaleX: 1, duration: DATA.duration, ease: 'none'}, 0);
+      window.__timelines = window.__timelines || {};
+      window.__timelines.main = tl;
+    </script>
+  </body>
+</html>
